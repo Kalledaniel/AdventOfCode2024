@@ -11,7 +11,6 @@
 
 int main() {
     printf("Start of Day 2\n");
-
     // Stary 
     FILE *file = fopen("input.txt", "r");
     if (file == NULL) {
@@ -50,9 +49,7 @@ int main() {
     fclose(file);
 
     // Print the rows to verify
-
     int number_of_safe_rows = 0;
-
     for (int i = 0; i < rowCount; i++) {
         int current_number = rows[i][0];
         bool is_increase;
@@ -91,6 +88,77 @@ int main() {
 
     printf("Number of safe rows: %d\n", number_of_safe_rows);
 
+
+    // part 2
+
+    int safe_flors = 0;
+    for (int i = 0; i < rowCount; i++) {
+        
+        for (int j = 0; j < rowSizes[i]; j++) {
+            int current_number = rows[i][0];
+            bool is_increase;
+            bool success = true;
+            if (current_number < rows[i][1]) {
+                is_increase = true;
+            } else {
+                is_increase = false;
+            }
+            if (j == 0) {
+                current_number = rows[i][1];
+                if (current_number < rows[i][2]) {
+                    is_increase = true;
+                } else {
+                    is_increase = false;
+                }
+            }
+            if (j == 1) {
+                if (current_number < rows[i][2]) {
+                    is_increase = true;
+                } else {
+                    is_increase = false;
+                }
+            }
+
+            int k_place = 1;
+            if (j == 0) {
+                k_place = 2;
+            }
+
+            for (int k = k_place; k < rowSizes[i]; k++) {
+                if (j == k) {
+                    continue;
+                }
+                int diffrence = rows[i][k] - current_number;
+                if (is_increase) {
+                    if (1 <= diffrence && diffrence <= 3) {
+                        is_increase = true;
+                    } else {
+                        is_increase = false;
+                        success = false;
+                        break;
+                    }
+                } else {
+                    if (-3 <= diffrence && diffrence <= -1) {   
+                        is_increase = false;
+                    } else {
+                        is_increase = true;
+                        success = false;
+                        break;
+                    }
+                }
+                current_number = rows[i][k];
+            }
+
+            if (success) {
+                safe_flors++;
+                break;
+            }
+        }
+    }
+
+    printf("Number of safe floors: %d\n", safe_flors);
+
+    
     // Free allocated memory
     for (int i = 0; i < rowCount; i++) {
         free(rows[i]);

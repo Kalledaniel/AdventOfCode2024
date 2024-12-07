@@ -17,19 +17,15 @@ void extractAndMultiply(const char *filename) {
     char buffer[1024];
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
         char *ptr = buffer;
-        // Search for "mul("
         while ((ptr = strstr(ptr, "mul(")) != NULL) {
             int num1, num2;
             char end_char;
 
-            // Parse the numbers inside mul(int1,int2)
            if (sscanf(ptr, "mul(%d,%d%c", &num1, &num2, &end_char) == 3 && end_char == ')') {
                 printf("(%d)Found: mul(%d, %d) -> Product: %d\n", count, num1, num2, num1 * num2);
                 total_multiplications+= num1 * num2;
                 count++;
             }
-
-            // Move the pointer forward to avoid re-processing the same match
             ptr += 4; // Move past "mul("
         }
     }
@@ -42,7 +38,7 @@ void extractAndMultiply(const char *filename) {
 }
 
 int main() {
-    const char *filename = "test_input.txt"; // Replace with your file path
+    const char *filename = "test_input.txt"; 
     extractAndMultiply(filename);
     return 0;
 }
